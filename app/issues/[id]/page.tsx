@@ -11,7 +11,6 @@ interface Props {
 const IssueDetailpage = async ({ params }: Props) => {
   // Validate if the `id` is a number
   const id = parseInt(params.id, 10);
-
   if (isNaN(id)) {
     notFound(); // Show "not found" for invalid `id` parameters
   }

@@ -2,8 +2,9 @@ import React from "react";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
-import { Heading, Flex, Card, Text } from "@radix-ui/themes";
+import { Heading, Flex, Card, Text, Box } from "@radix-ui/themes";
 import ReactMarkdown from "react-markdown";
+import delay from "delay";
 
 interface Props {
   params: { id: string };
@@ -21,11 +22,12 @@ const IssueDetailpage = async ({ params }: Props) => {
     where: { id: parseInt(params.id) },
   });
 
+  await delay(400);
   console.log(issue);
   if (!issue) notFound();
 
   return (
-    <div>
+    <Box>
       <Heading>{issue.title}</Heading>
       <Flex className="gap-2" my="2">
         <IssueStatusBadge status={issue.status} />
@@ -34,7 +36,7 @@ const IssueDetailpage = async ({ params }: Props) => {
       <Card className="prose" mt="4">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
       </Card>
-    </div>
+    </Box>
   );
 };
 

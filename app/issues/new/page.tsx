@@ -1,17 +1,20 @@
 "use client";
-import React, { useState } from "react";
-import { TextField, Button, Text } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
-import { useForm, Controller } from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Callout } from "@radix-ui/themes";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/ValidationSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Callout, TextField } from "@radix-ui/themes";
+import axios from "axios";
+import "easymde/dist/easymde.min.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import z from "zod";
+import dynamic from "next/dynamic";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 type FormData = z.infer<typeof createIssueSchema>;
 
@@ -54,6 +57,7 @@ const NewIssuePage = () => {
           <TextField.Input placeholder="Title" {...register("title")} />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
         <Controller
           name="description"
           control={control}

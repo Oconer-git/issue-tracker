@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import { Heading, Flex, Card, Text } from "@radix-ui/themes";
+import ReactMarkdown from "react-markdown";
 
 interface Props {
   params: { id: string };
@@ -20,6 +21,7 @@ const IssueDetailpage = async ({ params }: Props) => {
     where: { id: parseInt(params.id) },
   });
 
+  console.log(issue);
   if (!issue) notFound();
 
   return (
@@ -27,9 +29,11 @@ const IssueDetailpage = async ({ params }: Props) => {
       <Heading>{issue.title}</Heading>
       <Flex className="gap-2" my="2">
         <IssueStatusBadge status={issue.status} />
-        <Text>{issue.description}</Text>
+        <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Card>{issue.createdAt.toDateString()}</Card>
+      <Card className="prose" mt="4">
+        <ReactMarkdown>{issue.description}</ReactMarkdown>
+      </Card>
     </div>
   );
 };

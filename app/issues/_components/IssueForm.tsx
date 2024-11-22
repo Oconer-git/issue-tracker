@@ -10,12 +10,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
-import dynamic from "next/dynamic";
 import { Issue } from "@prisma/client";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
@@ -38,6 +34,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setLoading(true);
       await axios.post("/api/issues", data);
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       setLoading(false);
       setError("An unexpected error occured");
